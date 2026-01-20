@@ -1,7 +1,10 @@
 package com.example.exercise1;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -10,15 +13,26 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Task4 extends ApplicationAdapter {
     public static final float WORLD_WIDTH = 800;
     public static final float WORLD_HEIGHT = 480;
+
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Viewport viewport;
+
+    private Sprite ball;
+    private Sprite paddle;
+
+    Texture ballImage;
+    Texture paddleImage;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
 
+        ballImage = new Texture("pingpongball.png");
+        ball = new Sprite(ballImage);
 
+        paddleImage = new Texture("line.png");
+        paddle = new Sprite(paddleImage);
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
@@ -31,6 +45,10 @@ public class Task4 extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
 
+        batch.begin();
+        ball.draw(batch);
+        paddle.draw(batch);
+        batch.end();
     }
 
     @Override
@@ -42,6 +60,7 @@ public class Task4 extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+        ballImage.dispose();
+        paddleImage.dispose();
     }
-
 }
