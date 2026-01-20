@@ -19,7 +19,7 @@ public class Task4 extends ApplicationAdapter {
     private Viewport viewport;
 
     private Sprite ball;
-    private Sprite paddle;
+    private Sprite paddle1, paddle2;
 
     Texture ballImage;
     Texture paddleImage;
@@ -32,7 +32,12 @@ public class Task4 extends ApplicationAdapter {
         ball = new Sprite(ballImage);
 
         paddleImage = new Texture("line.png");
-        paddle = new Sprite(paddleImage);
+        paddle1 = new Sprite(paddleImage);
+        paddle2 = new Sprite(paddleImage);
+
+        ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, 0);
+        paddle1.setPosition(180, 60);
+        paddle2.setPosition(333, 160);
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
@@ -47,7 +52,8 @@ public class Task4 extends ApplicationAdapter {
 
         batch.begin();
         ball.draw(batch);
-        paddle.draw(batch);
+        paddle1.draw(batch);
+        paddle2.draw(batch);
         batch.end();
     }
 
