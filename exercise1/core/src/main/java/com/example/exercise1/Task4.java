@@ -35,9 +35,15 @@ public class Task4 extends ApplicationAdapter {
         paddle1 = new Sprite(paddleImage);
         paddle2 = new Sprite(paddleImage);
 
-        ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, 0);
-        paddle1.setPosition(180, 60);
-        paddle2.setPosition(333, 160);
+        ball.setSize(20, 20);
+        ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
+
+        paddle1.setPosition(WORLD_WIDTH-25, (WORLD_HEIGHT-200)/2);
+        paddle1.setSize(5, 200);
+        paddle2.setPosition(20, (WORLD_HEIGHT-200)/2);
+        paddle2.setSize(5, 200);
+//        paddle2.setPosition(0, 0);
+//        paddle2.setSize(800, 480);
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
