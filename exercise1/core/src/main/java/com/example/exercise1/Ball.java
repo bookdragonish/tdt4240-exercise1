@@ -21,21 +21,17 @@ public class Ball {
         ball.setSize(20, 20);
     }
 
-    public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt) {
+    public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt, int pointP1, int pointP2) {
         // Ball coordinates
-        float coordinateX = ball.getX();
         float coordinateY = ball.getY();
 
-        // Changes direction on speed if the ball get out of bounds
-        if (coordinateX >= (WORLD_WIDTH - ball.getWidth()) || coordinateX <= 0) {
-            velX = -velX;
-        }
         if (coordinateY >= (WORLD_HEIGHT - ball.getHeight()) || coordinateY <= 0) {
             velY = -velY;
         }
         ball.translate(velX * dt, velY * dt);
 
     }
+
 
     public void setPosition(float x, float y) {
         ball.setPosition(x, y);
@@ -55,6 +51,14 @@ public class Ball {
 
     public float getHeight() {
         return ball.getHeight();
+    }
+
+    public float getX() {
+        return ball.getX();
+    }
+
+    public void switchDirection() {
+        this.velX = -velX;
     }
 
     public void dispose() {

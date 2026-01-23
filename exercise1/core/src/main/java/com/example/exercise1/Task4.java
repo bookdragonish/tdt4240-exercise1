@@ -25,6 +25,10 @@ public class Task4 extends ApplicationAdapter {
     private Paddle paddle1, paddle2;
     private int pointPlayer1, pointPlayer2;
 
+    private boolean gameOver = false;
+
+    private int victoryScore = 2;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -50,37 +54,56 @@ public class Task4 extends ApplicationAdapter {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
+        if (gameOver) {
+            batch.begin();
 
-        // Moving ball
-        float dt = Gdx.graphics.getDeltaTime();
-        ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt);
+            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
 
-        // Moving the paddles
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) paddle1.paddleDirection(1, WORLD_HEIGHT);;
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) paddle1.paddleDirection(-1, WORLD_HEIGHT);
+            paddle1.draw(batch);
+            paddle2.draw(batch);
+            font.draw(batch, victoryString(), WORLD_WIDTH/2, WORLD_HEIGHT/2);
+            batch.end();
+        }
+        else {
+            ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+            camera.update();
+            batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) paddle2.paddleDirection(1, WORLD_HEIGHT);;
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) paddle2.paddleDirection(-1, WORLD_HEIGHT);;
+            // Moving ball
+            float dt = Gdx.graphics.getDeltaTime();
+            ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt, pointPlayer1, pointPlayer2);
 
-        // Check for collision
-        Rectangle boundsPaddle1 = paddle1.getBounds();
-        Rectangle boundsPaddle2 = paddle2.getBounds();
-        Rectangle boundsBall = ball.getBounds();
+            // Moving the paddles
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) paddle1.paddleDirection(1, WORLD_HEIGHT);;
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) paddle1.paddleDirection(-1, WORLD_HEIGHT);
 
-        if (boundsPaddle1.overlaps(boundsBall)) { System.out.println("Collision! 1");}
-        else if (boundsPaddle2.overlaps(boundsBall)) {  System.out.println("Collision! 2");}
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) paddle2.paddleDirection(1, WORLD_HEIGHT);;
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) paddle2.paddleDirection(-1, WORLD_HEIGHT);;
+
+            // Check for collision
+            Rectangle boundsPaddle1 = paddle1.getBounds();
+            Rectangle boundsPaddle2 = paddle2.getBounds();
+            Rectangle boundsBall = ball.getBounds();
+
+            if (boundsPaddle1.overlaps(boundsBall)) { System.out.println("Collision! 1");}
+            else if (boundsPaddle2.overlaps(boundsBall)) {  System.out.println("Collision! 2");}
+
+            handlePoints();
+
+            batch.begin();
+            ball.draw(batch);
+
+            // Switched player 1 and player 2 to display correctly
+            font.draw(batch, "Player 1: " + pointPlayer2, WORLD_WIDTH/4, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 2: " + pointPlayer1, WORLD_WIDTH/2, WORLD_HEIGHT-20);
+
+            paddle1.draw(batch);
+            paddle2.draw(batch);
+            batch.end();
+        }
 
 
-        batch.begin();
-        ball.draw(batch);
-        font.draw(batch, "Player 1: " + pointPlayer1, 20, WORLD_HEIGHT-20);
-        font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
-        paddle1.draw(batch);
-        paddle2.draw(batch);
-        batch.end();
     }
 
     @Override
@@ -98,4 +121,34 @@ public class Task4 extends ApplicationAdapter {
         font.dispose();
 
     }
+
+    public void handlePoints() {
+        if (ball.getX() >= (WORLD_WIDTH - ball.getWidth()) || ball.getX() <= 0) {
+            if (ball.getX() >= (WORLD_WIDTH - ball.getWidth())) {
+                pointPlayer2++;
+                if (pointPlayer2 == victoryScore) {
+                    gameOver = true;
+                }
+            }
+            else {
+                pointPlayer1++;
+                if (pointPlayer1 == victoryScore) {
+                    gameOver = true;
+                }
+            }
+            ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
+            ball.switchDirection();
+        }
+    }
+
+    public String victoryString() {
+        if (pointPlayer1 == victoryScore) {
+            return "Player 1 has won";
+        }
+        if (pointPlayer2 == victoryScore) {
+            return "Player 2 has won";
+        }
+        return null;
+    }
+
 }
