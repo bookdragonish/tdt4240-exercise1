@@ -1,0 +1,58 @@
+package com.example.exercise1;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class Ball {
+    private Sprite ball;
+
+    Texture ballImage;
+
+    private float velX = 180f;
+    private  float velY = 180f;
+
+    public Ball() {
+        ballImage = new Texture("pingpongball.png");
+
+        ball = new Sprite(ballImage);
+
+        ball.setSize(20, 20);
+    }
+
+    public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt) {
+        // Ball coordinates
+        float coordinateX = ball.getX();
+        float coordinateY = ball.getY();
+
+        // Changes direction on speed if the ball get out of bounds
+        if (coordinateX >= (WORLD_WIDTH - ball.getWidth()) || coordinateX <= 0) {
+            velX = -velX;
+        }
+        if (coordinateY >= (WORLD_HEIGHT - ball.getHeight()) || coordinateY <= 0) {
+            velY = -velY;
+        }
+        ball.translate(velX * dt, velY * dt);
+
+    }
+
+    public void setPosition(float x, float y) {
+        ball.setPosition(x, y);
+    }
+
+    public void draw(SpriteBatch batch) {
+        ball.draw(batch);
+    }
+
+    public float getWidth() {
+        return ball.getWidth();
+    }
+
+    public float getHeight() {
+        return ball.getHeight();
+    }
+
+    public void dispose() {
+        ballImage.dispose();
+    }
+}

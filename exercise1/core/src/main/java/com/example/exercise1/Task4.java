@@ -1,7 +1,7 @@
 package com.example.exercise1;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,7 +18,7 @@ public class Task4 extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    private Sprite ball;
+    private Ball ball;
     private Sprite paddle1, paddle2;
 
     Texture ballImage;
@@ -28,14 +28,12 @@ public class Task4 extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
 
-        ballImage = new Texture("pingpongball.png");
-        ball = new Sprite(ballImage);
+        ball = new Ball();
 
         paddleImage = new Texture("line.png");
         paddle1 = new Sprite(paddleImage);
         paddle2 = new Sprite(paddleImage);
 
-        ball.setSize(20, 20);
         ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
 
         paddle1.setPosition(WORLD_WIDTH-25, (WORLD_HEIGHT-200)/2);
@@ -55,6 +53,9 @@ public class Task4 extends ApplicationAdapter {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         camera.update();
         batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
+
+        float dt = Gdx.graphics.getDeltaTime();
+        ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt);
 
         batch.begin();
         ball.draw(batch);
