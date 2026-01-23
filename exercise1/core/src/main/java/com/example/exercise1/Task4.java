@@ -2,9 +2,8 @@ package com.example.exercise1;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -27,15 +26,13 @@ public class Task4 extends ApplicationAdapter {
 
         ball = new Ball();
 
-        paddle1 = new Paddle(5, 200);
-        paddle2 = new Paddle(5, 200);
+        paddle1 = new Paddle(5, 200, 3f);
+        paddle2 = new Paddle(5, 200, 3f);
 
         ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
 
         paddle1.setPosition(WORLD_WIDTH-25, (WORLD_HEIGHT-200)/2);
         paddle2.setPosition(20, (WORLD_HEIGHT-200)/2);
-//        paddle2.setPosition(0, 0);
-//        paddle2.setSize(800, 480);
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
@@ -50,6 +47,16 @@ public class Task4 extends ApplicationAdapter {
 
         float dt = Gdx.graphics.getDeltaTime();
         ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt);
+
+        int p1Dir = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) p1Dir += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) p1Dir -= 1;
+        paddle1.paddleDirection(p1Dir, WORLD_HEIGHT);
+
+        int p2Dir = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) p2Dir += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) p2Dir -= 1;
+        paddle2.paddleDirection(p2Dir, WORLD_HEIGHT);
 
         batch.begin();
         ball.draw(batch);

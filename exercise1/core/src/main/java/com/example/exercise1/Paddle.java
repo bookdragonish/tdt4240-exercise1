@@ -9,11 +9,21 @@ public class Paddle {
 
     Texture paddleImage;
 
-    public Paddle(float width, float height) {
+    float speed;
+
+    public Paddle(float width, float height, float speed) {
+        this.speed = speed;
         paddleImage = new Texture("line.png");
         paddle = new Sprite(paddleImage);
 
         paddle.setSize(width, height);
+    }
+
+    public void paddleDirection(int direction, float worldHeight) {
+        float yCoordinate = (direction * speed) + paddle.getY();
+        if (yCoordinate < worldHeight && yCoordinate > 0) {
+            paddle.setPosition(paddle.getX(), yCoordinate);
+        }
     }
 
     public void setPosition(float x, float y) {
