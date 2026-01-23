@@ -3,6 +3,7 @@ package com.example.exercise1;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Paddle {
     final Sprite paddle;
@@ -20,10 +21,25 @@ public class Paddle {
     }
 
     public void paddleDirection(int direction, float worldHeight) {
+        // Calculate the y coordinate that we want to move to
         float yCoordinate = (direction * speed) + paddle.getY();
-        if (yCoordinate < worldHeight && yCoordinate > 0) {
+
+        // Calculates the top bound, bottom bound is 0
+        float topBounds = worldHeight - paddle.getHeight();
+
+        if (yCoordinate < topBounds && yCoordinate > 0) {
             paddle.setPosition(paddle.getX(), yCoordinate);
         }
+    }
+
+
+    public void handleCollision(Ball ball){
+
+        System.out.println("Collision!");
+    }
+
+    public Rectangle getBounds(){
+        return paddle.getBoundingRectangle();
     }
 
     public void setPosition(float x, float y) {

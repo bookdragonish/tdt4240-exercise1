@@ -3,6 +3,7 @@ package com.example.exercise1;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Ball {
     private Sprite ball;
@@ -42,6 +43,10 @@ public class Ball {
 
     public void draw(SpriteBatch batch) {
         ball.draw(batch);
+    }
+
+    public Rectangle getBounds(){
+        return this.ball.getBoundingRectangle();
     }
 
     public float getWidth() {
