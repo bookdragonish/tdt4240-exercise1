@@ -27,7 +27,7 @@ public class Task4 extends ApplicationAdapter {
 
     private boolean gameOver = false;
 
-    private int victoryScore = 2;
+    final int victoryScore = 2;
 
     @Override
     public void create() {
@@ -44,8 +44,8 @@ public class Task4 extends ApplicationAdapter {
 
         ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
 
-        paddle1.setPosition(WORLD_WIDTH-25, (WORLD_HEIGHT-200)/2);
-        paddle2.setPosition(20, (WORLD_HEIGHT-200)/2);
+        paddle1.setPosition(20, (WORLD_HEIGHT-200)/2);
+        paddle2.setPosition(WORLD_WIDTH-25, (WORLD_HEIGHT-200)/2);
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
@@ -55,6 +55,9 @@ public class Task4 extends ApplicationAdapter {
     @Override
     public void render() {
         if (gameOver) {
+//            TODO: fix reset game function? Do if time:)
+//            if (Gdx.input.isKeyPressed(Input.Keys.R)) resetGame();
+
             batch.begin();
 
             font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
@@ -63,6 +66,7 @@ public class Task4 extends ApplicationAdapter {
             paddle1.draw(batch);
             paddle2.draw(batch);
             font.draw(batch, victoryString(), WORLD_WIDTH/2, WORLD_HEIGHT/2);
+
             batch.end();
         }
         else {
@@ -94,9 +98,8 @@ public class Task4 extends ApplicationAdapter {
             batch.begin();
             ball.draw(batch);
 
-            // Switched player 1 and player 2 to display correctly
-            font.draw(batch, "Player 1: " + pointPlayer2, WORLD_WIDTH/4, WORLD_HEIGHT-20);
-            font.draw(batch, "Player 2: " + pointPlayer1, WORLD_WIDTH/2, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
 
             paddle1.draw(batch);
             paddle2.draw(batch);
@@ -125,14 +128,14 @@ public class Task4 extends ApplicationAdapter {
     public void handlePoints() {
         if (ball.getX() >= (WORLD_WIDTH - ball.getWidth()) || ball.getX() <= 0) {
             if (ball.getX() >= (WORLD_WIDTH - ball.getWidth())) {
-                pointPlayer2++;
-                if (pointPlayer2 == victoryScore) {
+                pointPlayer1++;
+                if (pointPlayer1 == victoryScore) {
                     gameOver = true;
                 }
             }
             else {
-                pointPlayer1++;
-                if (pointPlayer1 == victoryScore) {
+                pointPlayer2++;
+                if (pointPlayer2 == victoryScore) {
                     gameOver = true;
                 }
             }
@@ -149,6 +152,12 @@ public class Task4 extends ApplicationAdapter {
             return "Player 2 has won";
         }
         return null;
+    }
+
+    public void resetGame() {
+        pointPlayer1 = 0;
+        pointPlayer2 = 0;
+        gameOver = false;
     }
 
 }
