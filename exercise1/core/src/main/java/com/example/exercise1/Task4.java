@@ -49,12 +49,14 @@ public class Task4 extends ApplicationAdapter {
 
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
+        viewport.apply();
         camera.position.set(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f, 0); // 2f puts the camera in center using float
     }
 
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        viewport.apply();
         camera.update();
         batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
 
@@ -112,8 +114,6 @@ public class Task4 extends ApplicationAdapter {
             paddle2.draw(batch);
             batch.end();
         }
-
-
     }
 
     @Override
