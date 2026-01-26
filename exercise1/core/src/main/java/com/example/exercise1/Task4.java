@@ -60,8 +60,8 @@ public class Task4 extends ApplicationAdapter {
 
             batch.begin();
 
-            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
-            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
+//            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
+//            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
 
             paddle1.draw(batch);
             paddle2.draw(batch);
@@ -76,22 +76,31 @@ public class Task4 extends ApplicationAdapter {
 
             // Moving ball
             float dt = Gdx.graphics.getDeltaTime();
-            ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt, pointPlayer1, pointPlayer2);
+
+            if (ball.getBallActive()) {
+                ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt, pointPlayer1, pointPlayer2);
+            }
 
             // Moving the paddles
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) paddle1.paddleDirection(1, WORLD_HEIGHT);;
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) paddle1.paddleDirection(-1, WORLD_HEIGHT);
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) paddle1.paddleDirection(1, WORLD_HEIGHT);;
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) paddle1.paddleDirection(-1, WORLD_HEIGHT);
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) paddle2.paddleDirection(1, WORLD_HEIGHT);;
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) paddle2.paddleDirection(-1, WORLD_HEIGHT);;
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) paddle2.paddleDirection(1, WORLD_HEIGHT);;
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) paddle2.paddleDirection(-1, WORLD_HEIGHT);;
 
             // Check for collision
             Rectangle boundsPaddle1 = paddle1.getBounds();
             Rectangle boundsPaddle2 = paddle2.getBounds();
             Rectangle boundsBall = ball.getBounds();
 
-            if (boundsPaddle1.overlaps(boundsBall)) { System.out.println("Collision! 1");}
-            else if (boundsPaddle2.overlaps(boundsBall)) {  System.out.println("Collision! 2");}
+            if (boundsPaddle1.overlaps(boundsBall)) {
+                System.out.println("Collision! 1");
+                ball.switchDirection();
+            }
+            else if (boundsPaddle2.overlaps(boundsBall)) {
+                System.out.println("Collision! 2");
+                ball.switchDirection();
+            }
 
             handlePoints();
 
@@ -131,12 +140,14 @@ public class Task4 extends ApplicationAdapter {
                 pointPlayer1++;
                 if (pointPlayer1 == victoryScore) {
                     gameOver = true;
+                    ball.setBallActive(false);
                 }
             }
             else {
                 pointPlayer2++;
                 if (pointPlayer2 == victoryScore) {
                     gameOver = true;
+                    ball.setBallActive(false);
                 }
             }
             ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
@@ -158,6 +169,7 @@ public class Task4 extends ApplicationAdapter {
         pointPlayer1 = 0;
         pointPlayer2 = 0;
         gameOver = false;
+        ball.setBallActive(true);
     }
 
 }

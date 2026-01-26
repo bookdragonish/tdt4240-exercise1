@@ -13,12 +13,16 @@ public class Ball {
     private float velX = 180f;
     private  float velY = 180f;
 
+    private boolean ballActive;
+
     public Ball() {
         ballImage = new Texture("pingpongball.png");
 
         ball = new Sprite(ballImage);
 
         ball.setSize(20, 20);
+
+        ballActive = true;
     }
 
     public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt, int pointP1, int pointP2) {
@@ -31,7 +35,6 @@ public class Ball {
         ball.translate(velX * dt, velY * dt);
 
     }
-
 
     public void setPosition(float x, float y) {
         ball.setPosition(x, y);
@@ -63,5 +66,13 @@ public class Ball {
 
     public void dispose() {
         ballImage.dispose();
+    }
+
+    public boolean getBallActive() {
+        return ballActive;
+    }
+
+    public void setBallActive(boolean ballActive) {
+        this.ballActive = ballActive;
     }
 }

@@ -32,12 +32,6 @@ public class Paddle {
         }
     }
 
-
-    public void handleCollision(Ball ball){
-
-        System.out.println("Collision!");
-    }
-
     public Rectangle getBounds(){
         return paddle.getBoundingRectangle();
     }
