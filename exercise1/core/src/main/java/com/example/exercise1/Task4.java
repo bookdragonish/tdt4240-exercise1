@@ -54,14 +54,17 @@ public class Task4 extends ApplicationAdapter {
 
     @Override
     public void render() {
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
+
         if (gameOver) {
-//            TODO: fix reset game function? Do if time:)
-//            if (Gdx.input.isKeyPressed(Input.Keys.R)) resetGame();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                resetGame();
+                return;
+            }
 
             batch.begin();
-
-//            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
-//            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
 
             paddle1.draw(batch);
             paddle2.draw(batch);
@@ -70,15 +73,26 @@ public class Task4 extends ApplicationAdapter {
             batch.end();
         }
         else {
-            ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-            camera.update();
-            batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
-
             // Moving ball
             float dt = Gdx.graphics.getDeltaTime();
 
             if (ball.getBallActive()) {
                 ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt, pointPlayer1, pointPlayer2);
+                // Check for collision
+                Rectangle boundsPaddle1 = paddle1.getBounds();
+                Rectangle boundsPaddle2 = paddle2.getBounds();
+                Rectangle boundsBall = ball.getBounds();
+
+                if (boundsPaddle1.overlaps(boundsBall)) {
+                    System.out.println("Collision! 1");
+                    ball.switchDirection();
+                }
+                else if (boundsPaddle2.overlaps(boundsBall)) {
+                    System.out.println("Collision! 2");
+                    ball.switchDirection();
+                }
+
+                handlePoints();
             }
 
             // Moving the paddles
@@ -87,22 +101,6 @@ public class Task4 extends ApplicationAdapter {
 
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) paddle2.paddleDirection(1, WORLD_HEIGHT);;
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) paddle2.paddleDirection(-1, WORLD_HEIGHT);;
-
-            // Check for collision
-            Rectangle boundsPaddle1 = paddle1.getBounds();
-            Rectangle boundsPaddle2 = paddle2.getBounds();
-            Rectangle boundsBall = ball.getBounds();
-
-            if (boundsPaddle1.overlaps(boundsBall)) {
-                System.out.println("Collision! 1");
-                ball.switchDirection();
-            }
-            else if (boundsPaddle2.overlaps(boundsBall)) {
-                System.out.println("Collision! 2");
-                ball.switchDirection();
-            }
-
-            handlePoints();
 
             batch.begin();
             ball.draw(batch);
@@ -157,12 +155,12 @@ public class Task4 extends ApplicationAdapter {
 
     public String victoryString() {
         if (pointPlayer1 == victoryScore) {
-            return "Player 1 has won";
+            return "Player 1 has won, press R to restart";
         }
         if (pointPlayer2 == victoryScore) {
-            return "Player 2 has won";
+            return "Player 2 has won, press R to restart";
         }
-        return null;
+        return "";
     }
 
     public void resetGame() {
