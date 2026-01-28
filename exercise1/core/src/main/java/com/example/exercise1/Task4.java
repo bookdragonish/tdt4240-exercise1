@@ -27,7 +27,7 @@ public class Task4 extends ApplicationAdapter {
 
     private boolean gameOver = false;
 
-    final int victoryScore = 2;
+    final int victoryScore = 21;
 
     @Override
     public void create() {
