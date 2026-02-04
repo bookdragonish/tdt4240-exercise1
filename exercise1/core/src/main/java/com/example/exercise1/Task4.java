@@ -21,26 +21,26 @@ public class Task4 extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
 
+    private GameManager gameManager;
     private Ball ball;
     private Paddle paddle1, paddle2;
-    private int pointPlayer1, pointPlayer2;
+//    private int pointPlayer1, pointPlayer2;
 
     private boolean gameOver = false;
 
-    final int victoryScore = 21;
+    final int victoryScore = 2;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
+        gameManager = GameManager.getInstance();
+
         ball = new Ball();
 
         paddle1 = new Paddle(5, 200, 3f);
         paddle2 = new Paddle(5, 200, 3f);
-
-        pointPlayer1 = 0;
-        pointPlayer2 = 0;
 
         ball.setPosition((WORLD_WIDTH-ball.getWidth())/2, (WORLD_HEIGHT-ball.getHeight())/2);
 
@@ -70,7 +70,7 @@ public class Task4 extends ApplicationAdapter {
 
             paddle1.draw(batch);
             paddle2.draw(batch);
-            font.draw(batch, victoryString(), WORLD_WIDTH/2, WORLD_HEIGHT/2);
+            font.draw(batch, victoryString(), WORLD_WIDTH/3, WORLD_HEIGHT/2);
 
             batch.end();
         }
@@ -79,7 +79,7 @@ public class Task4 extends ApplicationAdapter {
             float dt = Gdx.graphics.getDeltaTime();
 
             if (ball.getBallActive()) {
-                ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt, pointPlayer1, pointPlayer2);
+                ball.moveBall(WORLD_WIDTH, WORLD_HEIGHT, dt);
                 // Check for collision
                 Rectangle boundsPaddle1 = paddle1.getBounds();
                 Rectangle boundsPaddle2 = paddle2.getBounds();
@@ -107,8 +107,8 @@ public class Task4 extends ApplicationAdapter {
             batch.begin();
             ball.draw(batch);
 
-            font.draw(batch, "Player 1: " + pointPlayer1, WORLD_WIDTH/4, WORLD_HEIGHT-20);
-            font.draw(batch, "Player 2: " + pointPlayer2, WORLD_WIDTH/2, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 1: " + gameManager.getScorePlayer1(), WORLD_WIDTH/4, WORLD_HEIGHT-20);
+            font.draw(batch, "Player 2: " + gameManager.getScorePlayer2(), WORLD_WIDTH/2, WORLD_HEIGHT-20);
 
             paddle1.draw(batch);
             paddle2.draw(batch);
@@ -135,15 +135,15 @@ public class Task4 extends ApplicationAdapter {
     public void handlePoints() {
         if (ball.getX() >= (WORLD_WIDTH - ball.getWidth()) || ball.getX() <= 0) {
             if (ball.getX() >= (WORLD_WIDTH - ball.getWidth())) {
-                pointPlayer1++;
-                if (pointPlayer1 == victoryScore) {
+                gameManager.addScorePlayer1();
+                if (gameManager.getScorePlayer1() == victoryScore) {
                     gameOver = true;
                     ball.setBallActive(false);
                 }
             }
             else {
-                pointPlayer2++;
-                if (pointPlayer2 == victoryScore) {
+                gameManager.addScorePlayer2();
+                if (gameManager.getScorePlayer2() == victoryScore) {
                     gameOver = true;
                     ball.setBallActive(false);
                 }
@@ -154,18 +154,17 @@ public class Task4 extends ApplicationAdapter {
     }
 
     public String victoryString() {
-        if (pointPlayer1 == victoryScore) {
+        if (gameManager.getScorePlayer1() == victoryScore) {
             return "Player 1 has won, press R to restart";
         }
-        if (pointPlayer2 == victoryScore) {
+        if (gameManager.getScorePlayer2() == victoryScore) {
             return "Player 2 has won, press R to restart";
         }
         return "";
     }
 
     public void resetGame() {
-        pointPlayer1 = 0;
-        pointPlayer2 = 0;
+        gameManager.resetScores();
         gameOver = false;
         ball.setBallActive(true);
     }

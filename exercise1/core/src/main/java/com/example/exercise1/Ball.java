@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Ball {
-    private Sprite ball;
+    private final Sprite ball;
 
     Texture ballImage;
 
@@ -25,7 +25,7 @@ public class Ball {
         ballActive = true;
     }
 
-    public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt, int pointP1, int pointP2) {
+    public void moveBall(float WORLD_WIDTH, float WORLD_HEIGHT, float dt) {
         // Ball coordinates
         float coordinateY = ball.getY();
 
