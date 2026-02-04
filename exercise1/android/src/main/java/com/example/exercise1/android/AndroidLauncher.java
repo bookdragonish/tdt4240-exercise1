@@ -9,6 +9,7 @@ import com.example.exercise1.Task1;
 import com.example.exercise1.Task2;
 import com.example.exercise1.Task3a;
 import com.example.exercise1.Task3b;
+import com.example.exercise1.Task4;
 
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication {
@@ -17,6 +18,6 @@ public class AndroidLauncher extends AndroidApplication {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
         configuration.useImmersiveMode = true; // Recommended, but not required.
-        initialize(new Task3b(), configuration);
+        initialize(new Task4(), configuration);
     }
 }
