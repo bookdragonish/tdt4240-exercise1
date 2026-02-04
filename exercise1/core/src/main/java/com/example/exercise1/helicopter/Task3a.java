@@ -1,7 +1,7 @@
 /*This is the code of Task 1 - you can copy it into the MyGame class and run the code*/
 
 
-package com.example.exercise1;
+package com.example.exercise1.helicopter;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
