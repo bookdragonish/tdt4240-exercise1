@@ -26,7 +26,6 @@ public class Game extends ApplicationAdapter {
     final int victoryScore = 2;
 
     public void create() {
-        currentState = new PlayingState(this);
         batch = new SpriteBatch();
         font = new BitmapFont();
 
@@ -46,6 +45,8 @@ public class Game extends ApplicationAdapter {
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera); // Handles the scaling on different devices
         viewport.apply();
         camera.position.set(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f, 0); // 2f puts the camera in center using float
+
+        currentState = new PlayingState(this);
     }
 
     public void render() {
@@ -63,6 +64,12 @@ public class Game extends ApplicationAdapter {
         paddle1.dispose();
         paddle2.dispose();
         font.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+               // This keeps your game scaling correctly if the window size changes
+        viewport.update(width, height, true);
     }
 
     public void handlePoints() {
