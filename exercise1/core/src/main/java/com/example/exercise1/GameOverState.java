@@ -26,16 +26,6 @@ public class GameOverState implements GameState {
     }
 
     @Override
-    public void handleInput(Input input) {
-
-    }
-
-    @Override
-    public void update(float deltaTime) {
-
-    }
-
-    @Override
     public void render() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             resetGame();

@@ -25,16 +25,6 @@ public class PlayingState implements GameState {
     }
 
     @Override
-    public void handleInput(Input input) {
-
-    }
-
-    @Override
-    public void update(float deltaTime) {
-
-    }
-
-    @Override
     public void render() {
         // Moving ball
         float dt = Gdx.graphics.getDeltaTime();
