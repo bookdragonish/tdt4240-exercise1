@@ -1,41 +1,40 @@
 /*This is the code of Task 1 - you can copy it into the MyGame class and run the code*/
 
 
-package com.example.exercise1;
+package com.example.exercise1.helicopter;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Task1 extends ApplicationAdapter {
+public class Task3b extends ApplicationAdapter {
 
     // Setting a game size. This is not needed for the task but nice to know.
     public static final float WORLD_WIDTH = 480;
     public static final float WORLD_HEIGHT = 800;
 
-    // pixels to move each second
-    private float velX = 120f;
-    private  float velY = 180f;
-
+    // Sprites
     private SpriteBatch batch;
-    private Sprite helicopter;
-    private Texture helicopterTexture;
+    private Helicopter h1, h2;
 
+    // View
     private OrthographicCamera camera;
     private Viewport viewport;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        helicopterTexture = new Texture("heli1.png");
-        helicopter = new Sprite(helicopterTexture);
+
+        h1 = new Helicopter(120f, 380f);
+        h2 = new Helicopter(120f, 180f);
+
+        h1.setPosition(140, 210);
+        h1.setPosition(300, 50);
 
         // Defining and setting camera position
         camera = new OrthographicCamera(); // Camera with no perspective for 2D
@@ -46,35 +45,22 @@ public class Task1 extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
         camera.update();
         batch.setProjectionMatrix(camera.combined); // sets origo to be bottom left of world not screen
 
         // Getting the time and moving the helicopter based on the time
         float dt = Gdx.graphics.getDeltaTime();
+        h1.animateFrames(dt);
+        h2.animateFrames(dt);
 
-        // Helicopter coordinates
-        float coordinateX = helicopter.getX();
-        float coordinateY = helicopter.getY();
+        h1.bounceOff(h2);
 
-        // Changes direction on speed if the helicopter get out of bounds
-        if(coordinateX >= (WORLD_WIDTH-helicopter.getWidth()) || coordinateX <= 0){
-            velX = -velX;
-        }
-        if (coordinateY >= (WORLD_HEIGHT-helicopter.getHeight()) || coordinateY <= 0){
-            velY = -velY;
-        }
-        helicopter.translate(velX * dt, velY * dt);
-
-        // Direction of helicopter:
-        if (velX < 0) {
-            helicopter.setFlip(false, false);   // face left
-        } else {
-            helicopter.setFlip(true, false);  // face right
-        }
+        h1.checkDirection(WORLD_WIDTH, WORLD_HEIGHT, dt);
+        h2.checkDirection(WORLD_WIDTH, WORLD_HEIGHT, dt);
 
         batch.begin();
-        helicopter.draw(batch);
+        h1.draw(batch);
+        h2.draw(batch);
         batch.end();
     }
 
@@ -87,6 +73,7 @@ public class Task1 extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        helicopterTexture.dispose();
+        h1.dispose();
+        h2.dispose();
     }
 }

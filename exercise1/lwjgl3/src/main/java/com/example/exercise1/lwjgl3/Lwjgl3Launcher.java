@@ -2,8 +2,7 @@ package com.example.exercise1.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.example.exercise1.MyGame;
-import com.example.exercise1.Task1;
+import com.example.exercise1.Game;
 import com.example.exercise1.Task4;
 
 /** Launches the desktop (LWJGL3) application. */
@@ -14,7 +13,7 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new Task4(), getDefaultConfiguration());
+        return new Lwjgl3Application(new Game(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

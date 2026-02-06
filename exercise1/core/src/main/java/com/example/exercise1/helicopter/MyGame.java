@@ -1,23 +1,18 @@
 /*This is the code of Task 1 - you can copy it into the MyGame class and run the code*/
 
 
-package com.example.exercise1;
+package com.example.exercise1.helicopter;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Task3b extends ApplicationAdapter {
+public class MyGame extends ApplicationAdapter {
 
     // Setting a game size. This is not needed for the task but nice to know.
     public static final float WORLD_WIDTH = 480;
